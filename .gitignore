@@ -1,0 +1,12 @@
+.tmp/
+node_modules/
+*.zip
+.DS_Store
+Thumbs.db
+
+# 测试过程中产生的临时文件
+test/*.png
+test/*.webm
+test/*.mp4
+test/downloads/
+test/fixtures/

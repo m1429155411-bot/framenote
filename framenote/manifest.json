@@ -1,0 +1,92 @@
+{
+  "manifest_version": 3,
+  "name": "帧记 · AI 视频笔记",
+  "short_name": "帧记",
+  "description": "边看网页视频边记笔记：时间戳自动绑定、自动音频识别与总结、AI 图文/大纲/文稿笔记、导图下载、画面 OCR，不遮挡视频。",
+  "version": "1.7.0",
+  "minimum_chrome_version": "116",
+  "icons": {
+    "16": "assets/icon16.png",
+    "32": "assets/icon32.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+  "action": {
+    "default_title": "打开帧记 AI 笔记",
+    "default_icon": {
+      "16": "assets/icon16.png",
+      "32": "assets/icon32.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon128.png"
+    }
+  },
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "downloads",
+    "activeTab",
+    "scripting",
+    "contextMenus",
+    "offscreen"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content/util.js",
+        "content/store.js",
+        "content/video.js",
+        "content/mindmap.js",
+        "content/ai.js",
+        "content/styles.js",
+        "content/ui.js",
+        "content/app.js",
+        "content/notes.js",
+        "content/insights.js",
+        "content/dialogs.js",
+        "content/actions.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "content/panel.css",
+        "assets/*"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "commands": {
+    "toggle-panel": {
+      "suggested_key": {
+        "default": "Alt+Shift+F",
+        "mac": "Alt+Shift+F"
+      },
+      "description": "打开 / 收起帧记 AI 笔记"
+    },
+    "capture-note": {
+      "suggested_key": {
+        "default": "Alt+Shift+S",
+        "mac": "Alt+Shift+S"
+      },
+      "description": "截取当前视频画面并记入笔记"
+    }
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  }
+}
