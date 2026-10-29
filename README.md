@@ -46,13 +46,15 @@
 
 **1.9.0 增强**：AI 笔记改为详细模式——章节 8–22 个、每节 3–6 条具体要点，补充原话引用、步骤/例子/数据/易错点，知识表和关键词更完整；输出上限提高到 6500 tokens。
 
+**1.9.1 体验优化**：「识别画面文字」和「语音听写」的弹窗改为面板内局部弹层，只覆盖右侧面板，不再给整个网页加遮罩，视频始终可见、可播放。
+
 > 设计原则：**本地优先**。笔记、截图、对话都存在本机；只有你主动触发 AI 功能时，相关文字或画面才会发送到你配置的 OpenAI 兼容接口。扩展没有自有服务器。
 
 ---
 
 ## 1. 安装（Chrome / Edge，约 1 分钟）
 
-1. 从 [Releases](https://github.com/m1429155411-bot/framenote/releases/latest) 下载 `framenote-v1.9.0.zip` 并解压，得到 `framenote` 文件夹（里面直接有 `manifest.json`）；也可以直接克隆仓库，使用仓库里的 `framenote/` 目录。
+1. 从 [Releases](https://github.com/m1429155411-bot/framenote/releases/latest) 下载 `framenote-v1.9.1.zip` 并解压，得到 `framenote` 文件夹（里面直接有 `manifest.json`）；也可以直接克隆仓库，使用仓库里的 `framenote/` 目录。
 2. 打开浏览器扩展管理页：
    - Chrome：`chrome://extensions`
    - Edge：`edge://extensions`

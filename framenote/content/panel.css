@@ -3171,6 +3171,28 @@
   animation: fnFadeIn 0.16s ease;
 }
 
+/* OCR / 听写等操作只覆盖面板自身，不覆盖网页和视频。 */
+.fn-modal-backdrop.is-panel-scoped {
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+  padding: 8px;
+  background: rgba(10, 10, 10, 0.3);
+  backdrop-filter: none;
+  border-radius: inherit;
+}
+
+.fn-modal-backdrop.is-panel-scoped .fn-modal,
+.fn-modal-backdrop.is-panel-scoped .fn-modal.is-narrow,
+.fn-modal-backdrop.is-panel-scoped .fn-modal.is-wide {
+  width: 100%;
+  max-width: 100%;
+  max-height: calc(100% - 2px);
+  margin: auto;
+  border-radius: 12px;
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.35);
+}
+
 @keyframes fnFadeIn {
   from { opacity: 0; }
   to { opacity: 1; }

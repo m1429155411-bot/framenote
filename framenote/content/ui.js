@@ -418,8 +418,11 @@
 
   function openModal(options = {}) {
     closeModal();
+    const panelScoped = !!options.panel;
+    const scope = panelScoped ? panelEl || root?.querySelector('.fn-panel') : els.modalRoot;
+    if (!scope) return { modal: document.createElement('div'), backdrop: document.createElement('div'), close: closeModal };
     const backdrop = document.createElement('div');
-    backdrop.className = 'fn-modal-backdrop';
+    backdrop.className = `fn-modal-backdrop${panelScoped ? ' is-panel-scoped' : ''}`;
     const sizeClass = options.wide ? ' is-wide' : options.narrow ? ' is-narrow' : '';
     backdrop.innerHTML = `
       <div class="fn-modal${sizeClass}" role="dialog" aria-modal="true" aria-label="${FN.escapeHtml(options.title || '帧记')}" tabindex="-1">
@@ -433,7 +436,7 @@
         <div class="fn-modal-body${options.flush ? ' is-flush' : ''}">${options.body || ''}</div>
         ${options.footer ? `<div class="fn-modal-foot">${options.footer}</div>` : ''}
       </div>`;
-    els.modalRoot.appendChild(backdrop);
+    scope.appendChild(backdrop);
     const modal = backdrop.querySelector('.fn-modal');
     modalState = { backdrop, modal, onClose: options.onClose, persistent: !!options.persistent, resolve: null };
     backdrop.addEventListener('mousedown', (event) => {

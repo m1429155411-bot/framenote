@@ -459,6 +459,7 @@
       subtitle: '把当前视频的声音识别成可编辑的带时间戳文字',
       icon: 'mic',
       narrow: true,
+      panel: true,
       body: `
         <div class="fn-speech-intro">
           <div class="fn-speech-icon">${FN.icon('mic', 25)}</div>
@@ -502,6 +503,7 @@
       subtitle: '录音在后台继续；关闭本窗口不会停止，面板顶部可以停止',
       icon: 'mic',
       narrow: true,
+      panel: true,
       body: `
         <div class="fn-speech-intro is-live">
           <div class="fn-speech-icon is-live">${FN.icon('mic', 25)}</div>
@@ -567,6 +569,7 @@
       subtitle: `识别出 ${segments.length} 段 · 可以修改文字后再插入`,
       icon: 'mic',
       wide: true,
+      panel: true,
       body: `
         <div class="fn-speech-result">
           <div class="fn-speech-result-meta">
@@ -626,6 +629,7 @@
       title: '识别画面文字',
       subtitle: '本地 Tesseract 或你配置的视觉模型；结果可直接插入笔记',
       icon: 'scan',
+      panel: true,
       body: `
         <div class="fn-ocr-layout">
           <div class="fn-ocr-preview"><img src="${shot.dataUrl}" alt="待识别画面" /></div>
