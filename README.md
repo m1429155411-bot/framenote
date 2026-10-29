@@ -40,13 +40,15 @@
 
 **1.8.2 修复**：空状态统一改成和 AI 助手一致的卡片式；关闭面板后整个面板（包括单独启用 pointer-events 的「更多」按钮）改为 `visibility:hidden` + 禁止命中，透明状态下不再出现按钮 tooltip，也不会截获页面点击。
 
+**1.8.3 修复**：面板初始化和关闭时直接设置 `hidden` / `display:none` / `inert`，不再依赖透明度隐藏；这样即使 CSS 优先级变化，关闭后的顶部区域也不会被悬停或点击。
+
 > 设计原则：**本地优先**。笔记、截图、对话都存在本机；只有你主动触发 AI 功能时，相关文字或画面才会发送到你配置的 OpenAI 兼容接口。扩展没有自有服务器。
 
 ---
 
 ## 1. 安装（Chrome / Edge，约 1 分钟）
 
-1. 从 [Releases](https://github.com/m1429155411-bot/framenote/releases/latest) 下载 `framenote-v1.8.2.zip` 并解压，得到 `framenote` 文件夹（里面直接有 `manifest.json`）；也可以直接克隆仓库，使用仓库里的 `framenote/` 目录。
+1. 从 [Releases](https://github.com/m1429155411-bot/framenote/releases/latest) 下载 `framenote-v1.8.3.zip` 并解压，得到 `framenote` 文件夹（里面直接有 `manifest.json`）；也可以直接克隆仓库，使用仓库里的 `framenote/` 目录。
 2. 打开浏览器扩展管理页：
    - Chrome：`chrome://extensions`
    - Edge：`edge://extensions`

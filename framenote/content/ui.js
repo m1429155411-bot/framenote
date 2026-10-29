@@ -249,18 +249,31 @@
     els.templateBtns = [...root.querySelectorAll('[data-template]')];
     els.editor.addEventListener('paste', () => {});
     document.documentElement.appendChild(host);
+    // 初始也必须隐藏：不能依赖“打开过一次再关闭”才设置 hidden。
+    setOpen(false);
     return { host, root, els };
   }
 
   function setOpen(open) {
     if (!root) return;
-    root.classList.toggle('is-open', !!open);
+    const isOpen = !!open;
+    root.classList.toggle('is-open', isOpen);
+    const panel = root.querySelector('.fn-panel');
+    if (panel) {
+      // 只靠 opacity/pointer-events 不够：内部按钮会重新开启 pointer-events，
+      // 关闭后仍可能被悬停或点击。这里直接把面板移出渲染与命中测试。
+      panel.inert = !isOpen;
+      panel.hidden = !isOpen;
+      if (isOpen) panel.style.removeProperty('display');
+      else panel.style.setProperty('display', 'none', 'important');
+      panel.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+    }
   }
 
   function setDismissed(dismissed) {
     if (!root) return;
     root.classList.toggle('is-dismissed', !!dismissed);
-    if (dismissed) root.classList.remove('is-open');
+    if (dismissed) setOpen(false);
   }
 
   function setTheme(theme) {
