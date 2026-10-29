@@ -3,7 +3,7 @@
   "name": "帧记 · AI 视频笔记",
   "short_name": "帧记",
   "description": "边看网页视频边记笔记：时间戳自动绑定、自动音频识别与总结、AI 图文/大纲/文稿笔记、导图下载、画面 OCR，不遮挡视频。",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "minimum_chrome_version": "116",
   "icons": {
     "16": "assets/icon16.png",
@@ -36,29 +36,6 @@
     "service_worker": "background.js",
     "type": "module"
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "content/util.js",
-        "content/store.js",
-        "content/video.js",
-        "content/mindmap.js",
-        "content/ai.js",
-        "content/styles.js",
-        "content/ui.js",
-        "content/app.js",
-        "content/notes.js",
-        "content/insights.js",
-        "content/dialogs.js",
-        "content/actions.js"
-      ],
-      "run_at": "document_idle",
-      "all_frames": false
-    }
-  ],
   "web_accessible_resources": [
     {
       "resources": [

@@ -96,8 +96,17 @@ async function ensureContentScript(tabId) {
       target: { tabId, frameIds: [0] },
       files: CONTENT_FILES
     });
-    await new Promise((resolve) => setTimeout(resolve, 120));
-    return true;
+    // 内容脚本是懒加载的：等 App.init 注册好消息监听后再发送打开指令。
+    for (let attempt = 0; attempt < 40; attempt += 1) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      try {
+        const pong = await chrome.tabs.sendMessage(tabId, { type: 'fn:ping' }, { frameId: 0 });
+        if (pong?.ok) return true;
+      } catch (_) {
+        /* 还没就绪 */
+      }
+    }
+    return false;
   } catch (error) {
     console.warn('[帧记] 注入失败：', error?.message || error);
     return false;
