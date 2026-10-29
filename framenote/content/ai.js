@@ -294,17 +294,43 @@
     };
   }
 
-  async function generateNotes(settings, ctx, template) {
-    const format =
-      template === 'outline'
-        ? '用户当前需要「大纲笔记」：层级分明，每个 heading 是一个主节点，points 是子节点，适合直接转成思维导图。'
-        : template === 'transcript'
-          ? '用户当前需要「文稿笔记」：请尽量保留讲述顺序和细节，heading 用来划分章节，points 写这一段的要点；不要逐字照抄无意义口头语。'
-          : '用户当前需要「图文笔记」：每个 section 是一段可阅读的图文内容，points 要具体；如果该时间点有课件、图表、代码或关键画面，把 screenshot 设为 true。';
+  function notesFormat(template) {
+    return template === 'outline'
+      ? '用户当前需要「大纲笔记」：层级分明，每个 heading 是一个主节点，points 是子节点，适合直接转成思维导图。'
+      : template === 'transcript'
+        ? '用户当前需要「文稿笔记」：请尽量保留讲述顺序和细节，heading 用来划分章节，points 写这一段的要点；不要逐字照抄无意义口头语。'
+        : '用户当前需要「图文笔记」：每个 section 是一段可阅读的图文内容，points 要具体；如果该时间点有课件、图表、代码或关键画面，把 screenshot 设为 true。';
+  }
+
+  function splitTranscriptChunks(segments, maxChars = 18000) {
+    const chunks = [];
+    let current = [];
+    let size = 0;
+    for (const segment of segments || []) {
+      const text = String(segment?.text || '').trim();
+      if (!text) continue;
+      const length = text.length + 18;
+      if (current.length && size + length > maxChars) {
+        chunks.push(current);
+        current = [];
+        size = 0;
+      }
+      current.push(segment);
+      size += length;
+    }
+    if (current.length) chunks.push(current);
+    return chunks;
+  }
+
+  function transcriptTextLength(segments) {
+    return (segments || []).reduce((total, segment) => total + String(segment?.text || '').length, 0);
+  }
+
+  async function finalizeNotes(settings, ctx, template) {
     const user = `${materialBlock(ctx)}
 
 请生成一份${TEMPLATE_LABEL[template] || '视频笔记'}，目标是让人只看笔记就能复习这节课的细节，而不是只看目录。
-${format}
+${notesFormat(template)}
 
 输出 JSON，结构如下：
 {
@@ -343,6 +369,77 @@ ${format}
       { maxTokens: 6500, temperature: 0.25 }
     );
     return { ...normalizeNotes(result.data), raw: result.raw, usage: result.usage };
+  }
+
+  // 长视频不能把完整转写塞进一次请求，否则中间部分会被截断。
+  // 先按时间顺序分块提取章节，再合并成最终笔记，保证覆盖整个视频。
+  async function generateLongNotes(settings, ctx, template, options = {}) {
+    const chunks = splitTranscriptChunks(ctx.transcriptSegments || []);
+    const mapped = [];
+    for (let index = 0; index < chunks.length; index += 1) {
+      const chunk = chunks[index];
+      options.onProgress?.({ phase: 'map', index, total: chunks.length });
+      const start = Number(chunk[0]?.start) || 0;
+      const end = Number(chunk[chunk.length - 1]?.end) || Number(chunk[chunk.length - 1]?.start) || 0;
+      const chunkCtx = {
+        ...ctx,
+        transcriptText: segmentsToText(chunk, 22000),
+        transcriptSegments: chunk,
+        transcriptCount: chunk.length,
+        notesText: ''
+      };
+      const user = `【本段范围】${FN.fmtTime(start)} - ${FN.fmtTime(end)}（第 ${index + 1}/${chunks.length} 段）
+${materialBlock(chunkCtx)}
+
+请只整理这一段时间范围内的视频内容，不要总结整个视频，也不要重复其他段的内容。
+输出 JSON：
+{
+  "sections": [
+    {
+      "heading": "本段小标题，不超过 20 字",
+      "ts": 123.4,
+      "points": ["具体知识点 1", "具体知识点 2", "具体知识点 3"],
+      "quote": "这一段中一句关键原话，没有就留空",
+      "star": false,
+      "screenshot": false
+    }
+  ]
+}
+
+要求：
+- 按这一段的讲解顺序输出 4-8 个章节，覆盖这一段的开头到结尾。
+- 每节 3-6 条要点，每条 30-80 字，保留步骤、例子、数字、对比、代码/命令和易错点。
+- ts 必须来自本段材料，不能编造。
+- 只输出 JSON，不要输出 Markdown。`;
+      const result = await chatJson(
+        settings,
+        [
+          { role: 'system', content: SYSTEM_WRITER },
+          { role: 'user', content: user }
+        ],
+        { maxTokens: 2800, temperature: 0.2 }
+      );
+      mapped.push(...normalizeSections(result.data).slice(0, 12));
+    }
+
+    options.onProgress?.({ phase: 'reduce', index: chunks.length, total: chunks.length });
+    const digestCtx = {
+      ...ctx,
+      transcriptText: '',
+      transcriptSegments: [],
+      transcriptCount: 0,
+      notesText: `【完整视频分段阅读结果，按时间顺序】\n${JSON.stringify(mapped)}`,
+      hasContent: true
+    };
+    return finalizeNotes(settings, digestCtx, template);
+  }
+
+  async function generateNotes(settings, ctx, template, options = {}) {
+    const transcriptChars = transcriptTextLength(ctx.transcriptSegments);
+    if (transcriptChars > 24000 && (ctx.transcriptSegments || []).length > 8) {
+      return generateLongNotes(settings, ctx, template, options);
+    }
+    return finalizeNotes(settings, ctx, template);
   }
 
   /* ------------------------------------------------------------------------

@@ -338,7 +338,17 @@
         const ctx = await Insights.ensureContent(api, 0);
         api.step(1);
         api.detail(wantShots ? '正在挑选最值得复习的画面…' : '正在梳理章节与知识点…');
-        const generated = await FN.AI.generateNotes(state.settings, ctx, template);
+        const generated = await FN.AI.generateNotes(state.settings, ctx, template, {
+          onProgress: ({ phase, index, total }) => {
+            if (phase === 'map') {
+              api.detail(`长视频分段理解：第 ${index + 1}/${total} 段（不会漏掉中段）…`);
+              api.progress(12 + (index / Math.max(1, total)) * 36);
+            } else if (phase === 'reduce') {
+              api.detail('所有分段已读完，正在合并成完整笔记…');
+              api.progress(52);
+            }
+          }
+        });
         if (!generated.sections?.length) {
           throw new Error('AI 没有返回有效的笔记结构，请重试或换一个模型。');
         }
