@@ -1052,14 +1052,19 @@
     const configured = FN.AI.isConfigured(state.settings);
     if (!messages.length) {
       container.innerHTML = `
-        <div class="fn-empty" style="padding-top:24px">
-          <div class="fn-empty-art">${FN.icon('sparkles', 25)}</div>
-          <h3>边看边问，理解得更快</h3>
-          <p>AI 能看到当前视频的字幕、画面文字和你的笔记，并给出带时间戳的依据。</p>
+        <div class="fn-chat-intro">
+          <div class="fn-chat-intro-main">
+            <div class="fn-empty-art">${FN.icon('sparkles', 23)}</div>
+            <div class="fn-chat-copy">
+              <div class="fn-chat-kicker">AI 助手 · 独立对话</div>
+              <h3>边看边问，理解得更快</h3>
+              <p>AI 能看到当前视频的字幕、画面文字和你的笔记，并给出带时间戳的依据。</p>
+            </div>
+          </div>
           ${
             configured
               ? `<div class="fn-suggestions">${SUGGESTIONS.map((text) => `<button class="fn-suggestion" type="button" data-chat-suggest="${esc(text)}">${FN.icon('sparkles', 12)} ${esc(text)}</button>`).join('')}</div>`
-              : '<div class="fn-empty-actions"><button class="fn-btn is-sm is-primary" type="button" data-act="open-settings">配置 AI</button></div>'
+              : '<div class="fn-chat-prompt"><button class="fn-btn is-sm is-primary" type="button" data-act="open-settings">配置 AI</button></div>'
           }
         </div>`;
     } else {

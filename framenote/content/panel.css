@@ -1410,29 +1410,33 @@
   font-size: 10.5px;
 }
 
+/* 空状态改为左图右文，避免整块居中显得松散、占地方。 */
 .fn-empty {
-  padding: 30px 20px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
+  padding: 18px 14px;
+  text-align: left;
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  column-gap: 12px;
+  row-gap: 4px;
+  align-items: start;
 }
 
 .fn-empty-art {
-  width: 58px;
-  height: 58px;
-  border-radius: 18px;
+  grid-row: 1 / span 4;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--fn-primary-soft);
   color: var(--fn-primary-ink);
   border: 1px solid color-mix(in srgb, var(--fn-primary) 12%, transparent);
-  margin-bottom: 2px;
+  margin: 0;
 }
 
 .fn-empty h3 {
+  grid-column: 2;
   margin: 0;
   font-size: 14px;
   font-weight: 650;
@@ -1440,20 +1444,22 @@
 }
 
 .fn-empty p {
+  grid-column: 2;
   margin: 0;
-  max-width: 290px;
+  max-width: none;
   font-size: 11.5px;
   line-height: 1.7;
   color: var(--fn-muted);
 }
 
 .fn-empty-actions {
+  grid-column: 2;
   display: flex;
   align-items: center;
   gap: 7px;
-  margin-top: 4px;
+  margin-top: 3px;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 /* --------------------------------------------------------------------------
@@ -2809,13 +2815,77 @@
 
 .fn-chat-view {
   flex: 1;
-  display: flex;
+  display: none;
   flex-direction: column;
   min-height: 0;
+  /* 和上方的笔记 / 速览 / 导图等功能区拉开层次，避免看成同一块。 */
+  border-top: 1px solid var(--fn-line);
+  margin-top: 2px;
+  padding-top: 9px;
 }
 
 .fn-chat-view.is-active {
   display: flex;
+}
+
+.fn-chat-intro {
+  margin: 2px 0 10px;
+  padding: 12px;
+  border: 1px solid var(--fn-line);
+  border-radius: 12px;
+  background: var(--fn-bg-soft);
+}
+
+.fn-chat-intro-main {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  column-gap: 10px;
+  align-items: start;
+}
+
+.fn-chat-intro .fn-empty-art {
+  grid-row: auto;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+}
+
+.fn-chat-copy {
+  min-width: 0;
+}
+
+.fn-chat-kicker {
+  margin-bottom: 3px;
+  color: var(--fn-primary-ink);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.fn-chat-intro h3 {
+  margin: 0 0 3px;
+  color: var(--fn-text);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.fn-chat-intro p {
+  margin: 0;
+  color: var(--fn-muted);
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+.fn-chat-intro .fn-suggestions {
+  margin-top: 10px;
+  padding-top: 9px;
+  border-top: 1px dashed var(--fn-line);
+}
+
+.fn-chat-prompt {
+  margin-top: 10px;
+  padding-top: 9px;
+  border-top: 1px dashed var(--fn-line);
 }
 
 .fn-chat-scroll {

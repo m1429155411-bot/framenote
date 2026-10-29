@@ -36,13 +36,15 @@
 
 **1.8.0 视觉精简**：减少重复入口和装饰——快捷工具改为图标 + 独立 AI 按钮，顶栏只保留更多 / 收起 / 关闭，设置与笔记库收进「更多」，底栏只留导出；移除标签页和模板按钮的图标、视频副标题、编辑器里重复的截图 / 识字按钮，AI 配置提示收成单行。
 
+**1.8.1 布局优化**：空状态改为左图右文；修复「助手」对话页在非助手标签下仍然显示、与速览内容叠在一起的问题；对话页增加独立卡片和分隔线，与上方功能区明确区分。
+
 > 设计原则：**本地优先**。笔记、截图、对话都存在本机；只有你主动触发 AI 功能时，相关文字或画面才会发送到你配置的 OpenAI 兼容接口。扩展没有自有服务器。
 
 ---
 
 ## 1. 安装（Chrome / Edge，约 1 分钟）
 
-1. 从 [Releases](https://github.com/m1429155411-bot/framenote/releases/latest) 下载 `framenote-v1.8.0.zip` 并解压，得到 `framenote` 文件夹（里面直接有 `manifest.json`）；也可以直接克隆仓库，使用仓库里的 `framenote/` 目录。
+1. 从 [Releases](https://github.com/m1429155411-bot/framenote/releases/latest) 下载 `framenote-v1.8.1.zip` 并解压，得到 `framenote` 文件夹（里面直接有 `manifest.json`）；也可以直接克隆仓库，使用仓库里的 `framenote/` 目录。
 2. 打开浏览器扩展管理页：
    - Chrome：`chrome://extensions`
    - Edge：`edge://extensions`
