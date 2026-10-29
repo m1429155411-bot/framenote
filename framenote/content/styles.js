@@ -287,6 +287,14 @@
   transform: translateX(0) scale(1);
 }
 
+/* 关闭时让整个面板（包括内部单独开启 pointer-events 的按钮）彻底不可命中，
+   避免透明面板里的「更多」等按钮仍能被悬停出 tooltip 或点击。 */
+#fn-root:not(.is-open) .fn-panel,
+#fn-root:not(.is-open) .fn-panel * {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 #fn-root.is-open .fn-fab {
   opacity: 0;
   visibility: hidden;
@@ -1422,6 +1430,13 @@
   column-gap: 12px;
   row-gap: 4px;
   align-items: start;
+}
+
+.fn-empty.is-card {
+  padding: 14px 16px;
+  border: 1px solid var(--fn-line);
+  border-radius: 12px;
+  background: var(--fn-bg-soft);
 }
 
 .fn-empty-art {

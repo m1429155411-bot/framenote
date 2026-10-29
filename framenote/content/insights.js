@@ -17,7 +17,7 @@
 
   function emptyState({ icon, title, text, actions = '' }) {
     return `
-      <div class="fn-empty">
+      <div class="fn-empty is-card">
         <div class="fn-empty-art">${FN.icon(icon, 25)}</div>
         <h3>${esc(title)}</h3>
         <p>${text}</p>
