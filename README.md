@@ -42,13 +42,15 @@
 
 **1.8.3 修复**：面板初始化和关闭时直接设置 `hidden` / `display:none` / `inert`，不再依赖透明度隐藏；这样即使 CSS 优先级变化，关闭后的顶部区域也不会被悬停或点击。
 
+**1.8.4 修复**：关闭面板时把面板节点直接移出 DOM，重新打开时再挂回；顶部区域不再存在任何可命中的插件节点或 tooltip 来源。
+
 > 设计原则：**本地优先**。笔记、截图、对话都存在本机；只有你主动触发 AI 功能时，相关文字或画面才会发送到你配置的 OpenAI 兼容接口。扩展没有自有服务器。
 
 ---
 
 ## 1. 安装（Chrome / Edge，约 1 分钟）
 
-1. 从 [Releases](https://github.com/m1429155411-bot/framenote/releases/latest) 下载 `framenote-v1.8.3.zip` 并解压，得到 `framenote` 文件夹（里面直接有 `manifest.json`）；也可以直接克隆仓库，使用仓库里的 `framenote/` 目录。
+1. 从 [Releases](https://github.com/m1429155411-bot/framenote/releases/latest) 下载 `framenote-v1.8.4.zip` 并解压，得到 `framenote` 文件夹（里面直接有 `manifest.json`）；也可以直接克隆仓库，使用仓库里的 `framenote/` 目录。
 2. 打开浏览器扩展管理页：
    - Chrome：`chrome://extensions`
    - Edge：`edge://extensions`

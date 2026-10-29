@@ -201,6 +201,7 @@
   let host = null;
   let shadow = null;
   let root = null;
+  let panelEl = null;
   let els = {};
   let modalState = null;
 
@@ -241,6 +242,7 @@
     wrapper.innerHTML = shellHtml();
     root = wrapper.firstElementChild;
     shadow.appendChild(root);
+    panelEl = root.querySelector('.fn-panel');
     for (const node of root.querySelectorAll('[data-el]')) {
       els[node.dataset.el] = node;
     }
@@ -249,25 +251,41 @@
     els.templateBtns = [...root.querySelectorAll('[data-template]')];
     els.editor.addEventListener('paste', () => {});
     document.documentElement.appendChild(host);
-    // 初始也必须隐藏：不能依赖“打开过一次再关闭”才设置 hidden。
-    setOpen(false);
+    // 初始先隐藏，但暂时保留在 DOM 中，方便 Actions 绑定拖拽 / 缩放手柄。
+    if (panelEl) {
+      panelEl.hidden = true;
+      panelEl.inert = true;
+      panelEl.style.setProperty('display', 'none', 'important');
+      panelEl.setAttribute('aria-hidden', 'true');
+    }
     return { host, root, els };
   }
 
   function setOpen(open) {
     if (!root) return;
     const isOpen = !!open;
-    root.classList.toggle('is-open', isOpen);
-    const panel = root.querySelector('.fn-panel');
-    if (panel) {
-      // 只靠 opacity/pointer-events 不够：内部按钮会重新开启 pointer-events，
-      // 关闭后仍可能被悬停或点击。这里直接把面板移出渲染与命中测试。
-      panel.inert = !isOpen;
-      panel.hidden = !isOpen;
-      if (isOpen) panel.style.removeProperty('display');
-      else panel.style.setProperty('display', 'none', 'important');
-      panel.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+    const panel = panelEl || root.querySelector('.fn-panel');
+    if (!panel) return;
+
+    if (isOpen) {
+      if (!panel.isConnected) {
+        const modalRoot = root.querySelector('.fn-modal-root');
+        if (modalRoot) root.insertBefore(panel, modalRoot);
+        else root.appendChild(panel);
+      }
+      panel.inert = false;
+      panel.hidden = false;
+      panel.style.removeProperty('display');
+      panel.setAttribute('aria-hidden', 'false');
+    } else {
+      panel.inert = true;
+      panel.hidden = true;
+      panel.style.setProperty('display', 'none', 'important');
+      panel.setAttribute('aria-hidden', 'true');
+      // 只隐藏还不够：直接把面板移出 DOM，彻底消除悬停 / 点击 / tooltip。
+      panel.remove();
     }
+    root.classList.toggle('is-open', isOpen);
   }
 
   function setDismissed(dismissed) {

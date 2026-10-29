@@ -150,8 +150,9 @@
   App.openPanel = async function openPanel(options = {}) {
     if (!state.ready) return;
     FN.UI.setDismissed(false);
-    App.applyPanelLayout();
+    // 面板关闭时会从 DOM 移除，先重新挂载再应用浮动几何。
     FN.UI.setOpen(true);
+    App.applyPanelLayout();
     state.panelOpen = true;
     App.applyDocking();
     if (!state.note) {
