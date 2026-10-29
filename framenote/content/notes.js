@@ -45,7 +45,7 @@
       <div class="fn-ai-banner" data-act="open-settings">
         <div class="fn-ai-banner-icon">${FN.icon('sparkles', 16)}</div>
         <div class="fn-ai-banner-text">
-          <b>连接 AI，解锁一键笔记 / 脑图 / 出题</b>
+          <b>连接 AI，解锁完整笔记功能</b>
           <span>本地 OCR 与时间戳笔记无需配置，打开即用</span>
         </div>
         <span class="fn-link-btn">去配置 ${FN.icon('chevronRight', 11)}</span>

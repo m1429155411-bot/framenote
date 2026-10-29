@@ -126,10 +126,7 @@
   box-sizing: border-box;
 }
 
-#fn-root button,
-#fn-root input,
-#fn-root textarea,
-#fn-root select {
+:where(#fn-root) :where(button, input, textarea, select) {
   font: inherit;
   color: inherit;
 }
@@ -1530,12 +1527,12 @@
 .fn-ai-banner {
   display: flex;
   align-items: center;
-  gap: 9px;
-  padding: 8px 10px;
-  border-radius: 9px;
+  gap: 7px;
+  padding: 6px 8px;
+  border-radius: 8px;
   background: var(--fn-bg);
   border: 1px solid var(--fn-line);
-  margin-bottom: 9px;
+  margin-bottom: 8px;
   cursor: pointer;
   transition: border-color 0.15s;
 }
@@ -1545,9 +1542,9 @@
 }
 
 .fn-ai-banner-icon {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
+  width: 23px;
+  height: 23px;
+  border-radius: 7px;
   background: var(--fn-primary);
   display: flex;
   align-items: center;
@@ -1570,10 +1567,7 @@
 }
 
 .fn-ai-banner-text span {
-  display: block;
-  font-size: 10.5px;
-  color: var(--fn-muted);
-  margin-top: 1px;
+  display: none;
 }
 
 .fn-note-title-row {
@@ -3992,8 +3986,44 @@
   color: var(--fn-on-primary) !important;
 }
 
+/* 简约化：快捷工具只留图标，AI 笔记保留文字；工具栏与模板去掉图标噪音。 */
+.fn-video-sub {
+  display: none;
+}
+
+.fn-quickbar {
+  grid-template-columns: repeat(4, 1fr) 1.55fr;
+  gap: 4px;
+  padding: 8px 10px 7px;
+}
+
+.fn-quick-btn {
+  border-color: transparent;
+  background: transparent;
+}
+
+.fn-quick-btn:not(.is-primary) {
+  font-size: 0;
+  gap: 0;
+}
+
+.fn-quick-btn:not(.is-primary) .fn-icon {
+  width: 17px;
+  height: 17px;
+}
+
+.fn-quick-btn:not(.is-primary):hover {
+  background: var(--fn-surface);
+  border-color: var(--fn-line);
+}
+
+.fn-tab .fn-icon,
+.fn-template-btn .fn-icon {
+  display: none;
+}
+
 @media (max-width: 410px) {
-  .fn-quickbar { grid-template-columns: repeat(3, 1fr); }
+  .fn-quickbar { grid-template-columns: repeat(4, 1fr) 1.55fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {

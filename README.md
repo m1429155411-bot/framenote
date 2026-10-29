@@ -8,7 +8,7 @@
 
 > **下载安装**：[最新 Release](https://github.com/m1429155411-bot/framenote/releases/latest) · [使用说明](README.md) · [隐私说明](framenote/PRIVACY.md)
 
-![帧记界面](screenshots/54-floating-dock.png)
+![帧记界面](screenshots/57-simplified.png)
 
 **1.1 新增**：自动识别视频音频并写入带时间戳文稿，停止后后台自动生成总结；打开面板时自动压缩页面给视频让位，AI 进度改为面板内联显示，不再用全屏弹窗遮挡视频。
 
@@ -34,13 +34,15 @@
 
 **1.7.1 修复**：改为按需注入——只有点击工具栏图标（或使用快捷键 / 右键菜单）后，才会向当前网页注入面板和悬浮按钮；未点击时网页中不存在任何帧记内容。
 
+**1.8.0 视觉精简**：减少重复入口和装饰——快捷工具改为图标 + 独立 AI 按钮，顶栏只保留更多 / 收起 / 关闭，设置与笔记库收进「更多」，底栏只留导出；移除标签页和模板按钮的图标、视频副标题、编辑器里重复的截图 / 识字按钮，AI 配置提示收成单行。
+
 > 设计原则：**本地优先**。笔记、截图、对话都存在本机；只有你主动触发 AI 功能时，相关文字或画面才会发送到你配置的 OpenAI 兼容接口。扩展没有自有服务器。
 
 ---
 
 ## 1. 安装（Chrome / Edge，约 1 分钟）
 
-1. 从 [Releases](https://github.com/m1429155411-bot/framenote/releases/latest) 下载 `framenote-v1.7.1.zip` 并解压，得到 `framenote` 文件夹（里面直接有 `manifest.json`）；也可以直接克隆仓库，使用仓库里的 `framenote/` 目录。
+1. 从 [Releases](https://github.com/m1429155411-bot/framenote/releases/latest) 下载 `framenote-v1.8.0.zip` 并解压，得到 `framenote` 文件夹（里面直接有 `manifest.json`）；也可以直接克隆仓库，使用仓库里的 `framenote/` 目录。
 2. 打开浏览器扩展管理页：
    - Chrome：`chrome://extensions`
    - Edge：`edge://extensions`

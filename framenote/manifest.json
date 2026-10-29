@@ -3,7 +3,7 @@
   "name": "帧记 · AI 视频笔记",
   "short_name": "帧记",
   "description": "边看网页视频边记笔记：时间戳自动绑定、自动音频识别与总结、AI 图文/大纲/文稿笔记、导图下载、画面 OCR，不遮挡视频。",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "minimum_chrome_version": "116",
   "icons": {
     "16": "assets/icon16.png",

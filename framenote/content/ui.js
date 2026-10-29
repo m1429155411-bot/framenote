@@ -23,14 +23,12 @@
       <div class="fn-brand">
         <div class="fn-logo"><img src="${logo}" alt="" /></div>
         <div class="fn-brand-text">
-          <div class="fn-brand-name">帧记 <em>AI 笔记</em></div>
-          <div class="fn-brand-sub">视频看到哪 · 笔记记到哪</div>
+          <div class="fn-brand-name">帧记</div>
         </div>
       </div>
       <div class="fn-head-actions">
         <button class="fn-icon-btn fn-dock-btn" type="button" data-act="dock-panel" title="停靠到右侧" aria-label="停靠到右侧">${ICON('grid', 16)}</button>
-        <button class="fn-icon-btn" type="button" data-act="library" title="笔记库" aria-label="打开笔记库">${ICON('library', 17)}</button>
-        <button class="fn-icon-btn" type="button" data-act="settings" title="设置" aria-label="打开设置">${ICON('settings', 17)}</button>
+        <button class="fn-icon-btn" type="button" data-act="note-more" title="更多：笔记库 / 设置 / 导出" aria-label="更多">${ICON('more', 18)}</button>
         <button class="fn-icon-btn" type="button" data-act="collapse" title="收起面板">${ICON('chevronRight', 18)}</button>
         <button class="fn-icon-btn" type="button" data-act="close" title="关闭">${ICON('close', 17)}</button>
       </div>
@@ -48,9 +46,6 @@
             <span data-el="videoDuration">--:--</span>
           </div>
         </div>
-        <button class="fn-live-pill" type="button" data-act="timestamp" title="把当前播放时间插入笔记">
-          <b data-el="liveTime">00:00</b> 记一笔
-        </button>
       </div>
       <div class="fn-transport">
         <button class="fn-play-btn" type="button" data-act="play" data-el="play" title="播放 / 暂停">${ICON('play', 15)}</button>
@@ -127,8 +122,6 @@
               <button class="fn-editor-tool" type="button" data-cmd="quote" title="引用">${ICON('quote', 14)}</button>
               <span class="fn-editor-sep"></span>
               <button class="fn-editor-tool is-text" type="button" data-act="insert-ts" title="插入当前时间戳">${ICON('clock', 13)} 时间</button>
-              <button class="fn-editor-tool" type="button" data-act="editor-image" title="截取当前视频画面">${ICON('camera', 14)}</button>
-              <button class="fn-editor-tool" type="button" data-act="editor-ocr" title="截图并识字">${ICON('scan', 14)}</button>
               <button class="fn-editor-tool" type="button" data-act="editor-upload" title="上传本地图片">${ICON('image', 14)}</button>
               <button class="fn-editor-tool" type="button" data-act="editor-link" title="插入链接">${ICON('link', 14)}</button>
               <div class="fn-spacer"></div>
@@ -138,7 +131,6 @@
               data-placeholder="视频看到哪，笔记记到哪。&#10;点击上方「时间戳」把当前播放位置钉在笔记里；暂停视频后截图，画面会自动带上时间。"></div>
             <div class="fn-editor-status">
               <span class="fn-stat" data-el="editorStats">0 字 · 0 张图</span>
-              <span class="fn-stat">${ICON('clock', 11)} 点击时间戳可跳转视频</span>
             </div>
           </div>
         </div>
@@ -192,8 +184,6 @@
     <footer class="fn-footer">
       <span class="fn-save-state" data-el="saveState"><span class="fn-status-dot"></span><span data-el="saveText">本地自动保存</span></span>
       <div class="fn-footer-actions">
-        <button class="fn-footer-btn" type="button" data-act="library" title="笔记库">${ICON('library', 13)} 笔记库</button>
-        <button class="fn-footer-btn" type="button" data-act="settings" title="设置">${ICON('settings', 13)} 设置</button>
         <button class="fn-footer-btn" type="button" data-act="export" title="导出笔记">${ICON('download', 13)} 导出</button>
       </div>
     </footer>

@@ -384,7 +384,7 @@
     const pct = duration > 0 ? Math.max(0, Math.min(100, (time / duration) * 100)) : 0;
     el('currentTime').textContent = FN.fmtTime(time);
     el('duration').textContent = duration > 0 ? FN.fmtTime(duration) : '--:--';
-    el('liveTime').textContent = FN.fmtTime(time);
+    if (el('liveTime')) el('liveTime').textContent = FN.fmtTime(time);
     el('played').style.width = `${pct}%`;
     el('knob').style.left = `${pct}%`;
     const buffered = Number(st.buffered) || 0;
