@@ -149,6 +149,16 @@
 
   App.openPanel = async function openPanel(options = {}) {
     if (!state.ready) return;
+    // 原生 <video> 全屏时浏览器把视频放在 top layer，面板无法覆盖它；
+    // 先退出视频全屏，避免部分带鱼屏/显卡出现黑屏只剩声音。
+    const fullscreenVideo = document.fullscreenElement;
+    if (fullscreenVideo && fullscreenVideo.tagName === 'VIDEO') {
+      try {
+        await document.exitFullscreen?.();
+      } catch (_) {
+        /* ignore */
+      }
+    }
     FN.UI.setDismissed(false);
     // 面板关闭时会从 DOM 移除，先重新挂载再应用浮动几何。
     FN.UI.setOpen(true);
@@ -700,13 +710,16 @@
   document.addEventListener('fullscreenchange', () => {
     const host = FN.UI.host;
     if (!host) return;
-    if (document.fullscreenElement && !document.fullscreenElement.contains(host)) {
+    const fullscreen = document.fullscreenElement;
+    if (fullscreen && fullscreen.tagName !== 'VIDEO' && !fullscreen.contains(host)) {
+      // 全屏容器可以把面板挂进去；但绝不能把 div 塞进 <video>，
+      // 某些显卡/带鱼屏下会直接让视频黑屏，只剩声音。
       try {
-        document.fullscreenElement.appendChild(host);
+        fullscreen.appendChild(host);
       } catch (_) {
-        /* video 元素自身全屏时无法挂载 */
+        /* 忽略无法挂载的全屏元素 */
       }
-    } else if (!document.fullscreenElement) {
+    } else if (!fullscreen) {
       document.documentElement.appendChild(host);
     }
     setTimeout(() => App.applyDocking(), 80);

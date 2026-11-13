@@ -572,9 +572,48 @@
     return best;
   }
 
+  function isFullscreenMode() {
+    if (
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.mozFullScreenElement ||
+      document.msFullscreenElement
+    ) {
+      return true;
+    }
+    // F11 / 浏览器级全屏不一定有 fullscreenElement；带鱼屏全屏时，
+    // 页面让位和 body transform 会让部分播放器只剩黑屏和声音。
+    const video = findPrimaryVideo();
+    if (video?.webkitDisplayingFullscreen) return true;
+    if (video) {
+      const rect = video.getBoundingClientRect();
+      // 站点用 CSS 把播放器铺满视口、但没有走 Fullscreen API 的情况。
+      if (
+        rect.width >= window.innerWidth - 4 &&
+        rect.height >= window.innerHeight * 0.82
+      ) {
+        return true;
+      }
+    }
+    const screenWidth = Number(window.screen?.width) || 0;
+    const screenHeight = Number(window.screen?.height) || 0;
+    return (
+      screenWidth > 0 &&
+      screenHeight > 0 &&
+      window.innerWidth >= screenWidth - 2 &&
+      window.innerHeight >= screenHeight - 2
+    );
+  }
+
   function checkVideoOverlap() {
     const html = document.documentElement;
     if (!html.classList.contains('fn-framenote-docked')) return;
+    if (isFullscreenMode()) {
+      html.classList.remove('fn-framenote-shrink-video');
+      html.classList.remove('fn-framenote-scale-page');
+      html.style.removeProperty('--fn-page-scale');
+      return;
+    }
     const panel = root?.querySelector('.fn-panel');
     const video = findPrimaryVideo();
     if (!panel || !video) {
@@ -600,7 +639,7 @@
     const html = document.documentElement;
     const shouldDock =
       !!enabled &&
-      !document.fullscreenElement &&
+      !isFullscreenMode() &&
       window.innerWidth >= 860 &&
       !!root?.classList.contains('is-open');
     const isDocked = html.classList.contains('fn-framenote-docked');

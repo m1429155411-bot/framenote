@@ -50,13 +50,15 @@
 
 **2.0.0 长视频**：当转写超过约 2.4 万字时，AI 笔记会自动按时间顺序分段阅读，再合并成完整笔记；不会再因为上下文截断只读开头和结尾。分段越多，请求次数和耗时也会增加。
 
+**2.1.0 修复**：带鱼屏 / 浏览器全屏时不再给页面加右侧边距或 body transform，避免播放器黑屏只剩声音；原生 video 全屏时打开面板会先退出视频全屏。AI 笔记长视频合并改为保留全部分段细节，只让 AI 生成标题、概览、知识表和关键词，减少二次压缩丢失内容；并加强“只写原文依据、不编造”的约束。
+
 > 设计原则：**本地优先**。笔记、截图、对话都存在本机；只有你主动触发 AI 功能时，相关文字或画面才会发送到你配置的 OpenAI 兼容接口。扩展没有自有服务器。
 
 ---
 
 ## 1. 安装（Chrome / Edge，约 1 分钟）
 
-1. 从 [Releases](https://github.com/m1429155411-bot/framenote/releases/latest) 下载 `framenote-v2.0.0.zip` 并解压，得到 `framenote` 文件夹（里面直接有 `manifest.json`）；也可以直接克隆仓库，使用仓库里的 `framenote/` 目录。
+1. 从 [Releases](https://github.com/m1429155411-bot/framenote/releases/latest) 下载 `framenote-v2.1.0.zip` 并解压，得到 `framenote` 文件夹（里面直接有 `manifest.json`）；也可以直接克隆仓库，使用仓库里的 `framenote/` 目录。
 2. 打开浏览器扩展管理页：
    - Chrome：`chrome://extensions`
    - Edge：`edge://extensions`
