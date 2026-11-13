@@ -54,13 +54,15 @@
 
 **2.2.0 更详细**：从约 8 千字转写开始就按段提取，每段要求 5–9 个章节、每节 4–7 条具体要点；所有分段章节按时间合并保留，不再做第二次摘要压缩。短转写也提升到 10–24 节，并为定义、步骤、演示、例子、对比、数字、命令和易错点分别成条。
 
+**2.3.0 段落级笔记**：每个章节新增 100–220 字的连贯讲解 content，再配 4–6 条要点、原话引用和时间戳；图文笔记会先显示讲解段落再列要点，大纲和文稿也会保留这段讲解，不再只有干巴巴的要点列表。
+
 > 设计原则：**本地优先**。笔记、截图、对话都存在本机；只有你主动触发 AI 功能时，相关文字或画面才会发送到你配置的 OpenAI 兼容接口。扩展没有自有服务器。
 
 ---
 
 ## 1. 安装（Chrome / Edge，约 1 分钟）
 
-1. 从 [Releases](https://github.com/m1429155411-bot/framenote/releases/latest) 下载 `framenote-v2.2.0.zip` 并解压，得到 `framenote` 文件夹（里面直接有 `manifest.json`）；也可以直接克隆仓库，使用仓库里的 `framenote/` 目录。
+1. 从 [Releases](https://github.com/m1429155411-bot/framenote/releases/latest) 下载 `framenote-v2.3.0.zip` 并解压，得到 `framenote` 文件夹（里面直接有 `manifest.json`）；也可以直接克隆仓库，使用仓库里的 `framenote/` 目录。
 2. 打开浏览器扩展管理页：
    - Chrome：`chrome://extensions`
    - Edge：`edge://extensions`

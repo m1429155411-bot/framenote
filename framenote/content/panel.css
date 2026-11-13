@@ -1732,6 +1732,13 @@
   margin: 0.55em 0;
 }
 
+.fn-editor .fn-ai-detail {
+  margin: 0.15em 0 0.65em;
+  color: var(--fn-text-soft);
+  font-size: 12.5px;
+  line-height: 1.8;
+}
+
 .fn-editor ul,
 .fn-editor ol {
   margin: 0.5em 0;

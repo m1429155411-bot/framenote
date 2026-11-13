@@ -1678,6 +1678,9 @@
       parts.push(
         `<h2>${section.ts != null ? `${tsSpan(section.ts)} ` : ''}${esc(section.heading || '')}${star}</h2>`
       );
+      if (section.content) {
+        parts.push(`<p class="fn-ai-detail">${inline(section.content)}</p>`);
+      }
       if (section.points?.length) {
         parts.push(`<ul>${section.points.map((point) => `<li>${inline(point)}</li>`).join('')}</ul>`);
       }
@@ -1718,6 +1721,15 @@
         ts: section.ts != null ? Number(section.ts) : null,
         star: !!section.star
       });
+      if (section.content) {
+        nodes.push({
+          id: FN.uid('node'),
+          text: section.content,
+          level: 2,
+          ts: null,
+          star: false
+        });
+      }
       for (const point of section.points || []) {
         nodes.push({
           id: FN.uid('node'),
@@ -1755,7 +1767,7 @@
           : duration
             ? (duration * index) / count
             : index * 8;
-      const text = [section.heading, ...(section.points || [])].filter(Boolean).join('。');
+      const text = [section.heading, section.content, ...(section.points || [])].filter(Boolean).join('。');
       return {
         id: FN.uid('seg'),
         start,

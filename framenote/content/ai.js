@@ -226,6 +226,7 @@
           return {
             heading: FN.truncate(section, 80),
             ts: null,
+            content: '',
             points: [],
             quote: '',
             star: index === 0,
@@ -235,18 +236,30 @@
         const heading = FN.cleanText(
           section?.heading || section?.title || section?.name || ''
         );
-        const points = normalizePoints(section?.points || section?.bullets || section?.content);
+        const rawContent = section?.content;
+        const points = normalizePoints(
+          section?.points || section?.bullets || (Array.isArray(rawContent) ? rawContent : null)
+        );
+        const content = FN.truncate(
+          FN.cleanText(
+            typeof rawContent === 'string'
+              ? rawContent
+              : section?.detail || section?.explanation || ''
+          ),
+          600
+        );
         const tsRaw = section?.ts ?? section?.time ?? section?.timestamp;
         return {
           heading: heading || `第 ${index + 1} 部分`,
           ts: tsRaw != null && tsRaw !== '' ? clampNode(FN.parseTime(tsRaw), 0, 24 * 3600) : null,
+          content,
           points,
           quote: FN.cleanText(section?.quote || section?.transcript || ''),
           star: !!(section?.star || section?.key || section?.important),
           screenshot: section?.screenshot === true || section?.image === true
         };
       })
-      .filter((section) => section.heading || section.points.length)
+      .filter((section) => section.heading || section.content || section.points.length)
       .slice(0, 80);
   }
 
@@ -341,6 +354,7 @@ ${notesFormat(template)}
     {
       "heading": "本段小标题，不超过 20 字",
       "ts": 123.4,
+      "content": "2-4 句话的详细讲解：这一段在讲什么、为什么、怎么用，必要时补一个具体例子；100-220 字",
       "points": ["具体知识点 1", "具体知识点 2", "具体知识点 3"],
       "quote": "视频中一句关键原话，尽量填写",
       "star": true,
@@ -352,8 +366,9 @@ ${notesFormat(template)}
 }
 
 详细程度要求：
-- sections 根据视频长度生成 10-24 个，覆盖开头到结尾；长视频按讲解自然段落拆分，不要只总结前几分钟。
-- 每个 section 的 points 至少 4 条、最多 7 条；每条 40-100 字，写清楚“是什么、为什么、怎么做/例子/注意事项”，不要只写标题式短语。
+- sections 根据视频长度生成 8-16 个，覆盖开头到结尾；长视频按讲解自然段落拆分，不要只总结前几分钟。
+- 每个 section 都写 content：2-4 句、100-220 字的连贯讲解，说明这一段的核心逻辑、前后关系、为什么这样做，并尽量带例子；不要只是把 points 换一种说法。
+- 每个 section 的 points 至少 4 条、最多 6 条；每条 40-100 字，写清楚“是什么、为什么、怎么做/例子/注意事项”，不要只写标题式短语。
 - 每一个定义、步骤、演示操作、例子、对比、数字、代码/命令和易错点尽量单独成条，不要把不同内容合并成一句。
 - 尽量保留视频中的步骤、操作顺序、代码/命令、公式、对比关系、数字、例子和易错点；材料里有就写，不要用泛泛的话代替。
 - 每个 section 尽量给出一句 quote（老师原话或关键定义）；确实没有原话才留空。
@@ -455,6 +470,7 @@ ${materialBlock(chunkCtx)}
     {
       "heading": "本段小标题，不超过 20 字",
       "ts": 123.4,
+      "content": "2-4 句话的详细讲解，说明这一段的核心逻辑、步骤或例子；100-220 字",
       "points": ["具体知识点 1", "具体知识点 2", "具体知识点 3"],
       "quote": "这一段中一句关键原话，没有就留空",
       "star": false,
@@ -466,7 +482,8 @@ ${materialBlock(chunkCtx)}
 要求：
 - 把这一段当成课堂逐段整理，不要只写目录，也不要做粗粒度摘要。
 - 按讲解顺序输出 5-9 个章节，覆盖这一段的开头到结尾。
-- 每节 4-7 条要点，每条 40-100 字；尽量每一个定义、步骤、演示操作、例子、对比、数字、代码/命令、注意事项都单独成条。
+- 每节都写 content：2-4 句、100-220 字的连贯讲解，说明这一段在讲什么、为什么、前后关系和例子；不要只重复 points。
+- 每节 4-6 条要点，每条 40-100 字；尽量每一个定义、步骤、演示操作、例子、对比、数字、代码/命令、注意事项都单独成条。
 - 不要把不同的定义、步骤或例子合并成一句；原文讲了什么就保留什么。
 - 只写这一段原文明确讲过的内容；不要把推测写成事实，不要补充视频没讲的背景。
 - quote 尽量摘录原文原话；数字、命令、公式和术语必须与原文一致。
@@ -478,7 +495,7 @@ ${materialBlock(chunkCtx)}
           { role: 'system', content: SYSTEM_WRITER },
           { role: 'user', content: user }
         ],
-        { maxTokens: 4000, temperature: 0.2 }
+        { maxTokens: 4500, temperature: 0.2 }
       );
       mapped.push(...normalizeSections(result.data).slice(0, 16));
     }
